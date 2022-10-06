@@ -5,6 +5,8 @@ import 'Models/User.dart';
 import 'Transactions/new_transaction.dart';
 import 'Transactions/TransactionList.dart';
 import 'Models/Transaction.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 
 
 class MainPage extends StatefulWidget {
@@ -33,9 +35,16 @@ class _MainPageState extends State<MainPage> {
     });
   }
   void _addUser(String userName,String gender,int amount){
+    bool _add = true;
+    for (var element in _userList) {
+      if(element.userName.compareTo(userName) == 0) {
+        _add = false;
+        break;
+      }
+    }
     final User user = User(0,amount,userName,gender,"resource");
     setState((){
-      _userList.insert(0,user);
+      if(_add) _userList.insert(0,user);
     });
   }
 
@@ -83,7 +92,7 @@ class _MainPageState extends State<MainPage> {
                               return GestureDetector(
                                 behavior: HitTestBehavior.opaque,
                                   onTap: (){},
-                                  child: NewTransaction(_addTransaction));
+                                  child: NewTransaction(_userList,_addTransaction));
                             }));
                           },
                           icon: const Icon(Icons.add),
@@ -119,7 +128,7 @@ class _MainPageState extends State<MainPage> {
                                 return GestureDetector(
                                     behavior: HitTestBehavior.opaque,
                                     onTap: (){},
-                                    child: NewUser(_addUser));
+                                    child: NewUser(_userList,_addUser));
                               }));
                             },
                             icon: const Icon(Icons.add),

@@ -38,7 +38,7 @@ class UserUI extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             margin: const EdgeInsets.only(right: 25,top: 15,bottom: 15),
             decoration: BoxDecoration(border: Border.all(color: Theme.of(context).primaryColor,width: 2,style: BorderStyle.solid)),
-            child: Text("\u{20B9} ${user.balance}",style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold,color: Theme.of(context).primaryColor,),
+            child: Text("\u{20B9} ${user.balance}",style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold,color: user.balance<0? Colors.redAccent : Colors.green,),
             ),
           ),
         ],

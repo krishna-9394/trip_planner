@@ -4,22 +4,24 @@ import '../Models/User.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addTransaction;
+  final List<User> usersList;
+  const NewTransaction(this.usersList,this.addTransaction, {super.key});
 
-  const NewTransaction(this.addTransaction, {super.key});
-
-  get userNameList => null;
   @override
   State<NewTransaction> createState() => _NewTransactionState();
 }
 
 class _NewTransactionState extends State<NewTransaction> {
-  TextEditingController nameEditor = TextEditingController();
   TextEditingController noteEditor = TextEditingController();
   TextEditingController amountEditor = TextEditingController();
 
-
+  var dropdownvalue;
+  void initialize(){
+     widget.usersList.isEmpty? dropdownvalue = "" : dropdownvalue = widget.usersList[0].userName;
+  }
   @override
   Widget build(BuildContext context) {
+    initialize();
     return Container(
          margin: const EdgeInsets.only(left: 10,right: 10,top: 10),
          padding: const EdgeInsets.only(left: 10,right: 10,top: 10),
@@ -27,15 +29,23 @@ class _NewTransactionState extends State<NewTransaction> {
            children: [
              const Text("Add Transaction",style: TextStyle(fontWeight: FontWeight.bold)),
              const SizedBox(height: 10),
-             SizedBox(
+             Container(
                width: double.infinity,
                child: Column(
+                 mainAxisAlignment: MainAxisAlignment.start,
                  children: [
+                   DropdownButton<String>(
+                       icon: const Icon(Icons.keyboard_arrow_down),
+                       value: dropdownvalue,
+                       items: widget.usersList.map<DropdownMenuItem<String>>((User user){
+                          return DropdownMenuItem<String>  (value: user.userName,child: Text(user.userName),);
+                       }).toList(),
+                       onChanged: (newValue){
+                         setState(() {
+                           dropdownvalue = newValue!;
+                         });
+                       }),
                    TextField(
-                     controller: nameEditor,
-                     keyboardType: TextInputType.name,
-                     decoration: const InputDecoration(hintText: "enter the note.."),
-                   ),TextField(
                      controller: noteEditor,
                      keyboardType: TextInputType.text,
                      decoration: const InputDecoration(hintText: "enter the note.."),
@@ -57,7 +67,7 @@ class _NewTransactionState extends State<NewTransaction> {
                      child: const Text("Cancel",style: TextStyle(color: Colors.red),)),
                  TextButton(
                      onPressed: (){
-                       String name = nameEditor.text.trim();
+                       String name = dropdownvalue;
                        String note = noteEditor.text;
                        String amount = amountEditor.text;
                        if(name == '' || note == '' || amount == '' || int.parse(amount)<0){ return; }

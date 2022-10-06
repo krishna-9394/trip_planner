@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
+import '../Models/User.dart';
 
 class NewUser extends StatefulWidget {
   final Function addUser;
-  const NewUser(this.addUser, {super.key});
+  final List<User> userList;
+  const NewUser(this.userList,this.addUser, {super.key});
 
   @override
   State<NewUser> createState() => _NewUserState();
 }
 
 class _NewUserState extends State<NewUser> {
-  TextEditingController nameEditor = TextEditingController();
-  TextEditingController genderEditor = TextEditingController();
-  TextEditingController amountEditor = TextEditingController();
+  bool _showError = false;
+  final nameEditor = TextEditingController();
+  final genderEditor = TextEditingController();
+  final amountEditor = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +28,14 @@ class _NewUserState extends State<NewUser> {
           SizedBox(
             width: double.infinity,
             child: Column(
-              children: [
+              children:[
                  TextField(
                   controller: nameEditor,
                   autofocus: true,
                   keyboardType: TextInputType.name,
-                  decoration: const InputDecoration(hintText: "enter the UserName.."),
+                  decoration: InputDecoration(
+                      labelText: "enter the UserName..",
+                      errorText: _showError? "this user name already exist.." : null),
                 ),
                 TextField(
                   controller: genderEditor,
@@ -67,6 +72,15 @@ class _NewUserState extends State<NewUser> {
         ],
       ),
     );
+  }
+
+  bool validator(String text) {
+    String name = nameEditor.text.trim();
+    if(name.isEmpty) return false;
+    for (var element in widget.userList) {
+    if(element.userName.compareTo(name)==0) return false;
+    }
+    return true;
   }
 }// class
 
