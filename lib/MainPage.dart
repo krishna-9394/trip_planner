@@ -5,7 +5,6 @@ import 'Models/User.dart';
 import 'Transactions/new_transaction.dart';
 import 'Transactions/TransactionList.dart';
 import 'Models/Transaction.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 
 
@@ -18,23 +17,37 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-
+  double totalAmount = 0;
+  int n = 0;
+  double divident = 0;
   List<Transaction> _transactionList = [];
   List<User> _userList = [];
 
   void _addTransaction(String userName,String note,int amount){
-    int index = 0;
-    final Transaction transaction = Transaction(DateTime.now().toString(),amount,note,userName,DateTime.now());
-    for(int i = 0;i<_userList.length;i++){
-      if(_userList[i].userName.compareTo(userName) == 0) index = i;
+    int index = -1;
+    totalAmount+=amount;
+    n==0 ? divident = 0 : divident = totalAmount/n;
+    final Transaction transaction = Transaction(amount,note,userName,DateTime.now());
+    for(int i = 0;i<n;i++){
+      if(_userList[i].userName.compareTo(userName) == 0) {
+        index = i;
+        break;
+      }
     }
+
     setState((){
       _transactionList.insert(0,transaction);
       _userList[index].transaction.add(transaction);
-      _userList[index].setBalance = (transaction.amount+_userList[index].balance);
+      _userList[index].paid += transaction.amount;
+      for(int i = 0;i<n;i++){
+        _userList[i].setBalance= (_userList[i].paid-divident);
+      }
+
     });
   }
-  void _addUser(String userName,String gender,int amount){
+  void _addUser(String userName){
+    n++;
+    divident = totalAmount/n;
     bool _add = true;
     for (var element in _userList) {
       if(element.userName.compareTo(userName) == 0) {
@@ -42,9 +55,12 @@ class _MainPageState extends State<MainPage> {
         break;
       }
     }
-    final User user = User(0,amount,userName,gender,"resource");
+    final User user = User(0,0,userName,"resource");
     setState((){
       if(_add) _userList.insert(0,user);
+      for(int i = 0;i<_userList.length;i++){
+        _userList[i].setBalance= (_userList[i].paid-divident);
+      }
     });
   }
 

@@ -1,30 +1,34 @@
 import 'Transaction.dart';
 
-class User{
-  int _id;
-  int _balance;
-  List<Transaction> _transaction =[];
+class User {
+  double _paid;
+  double _balance;
+  List<Transaction> _transaction = [];
   String _userName;
-  String _gender;
   String _imageResource;
-  User(this._id,this._balance,this._userName,this._gender,this._imageResource);
 
-  int get id => _id;
+  User(this._paid, this._balance, this._userName, this._imageResource);
+
+  double get paid => _paid;
+
   String get userName => _userName;
-  List<Transaction> get transaction => _transaction;
-  int get balance => _balance;
-  String get imageResource => _imageResource;
-  String get gender => _gender;
 
-  set id(int value) => _id = value;
-  set userName(String value) =>_userName = value;
-  set note(List<Transaction> value) =>_transaction = value;
-  set setBalance(int value) => _balance = value;
+  List<Transaction> get transaction => _transaction;
+
+  double get balance => _balance;
+
+  String get imageResource => _imageResource;
+
+
+  set paid(double value) => _paid = value;
+
+  set userName(String value) => _userName = value;
+
+  set note(List<Transaction> value) => _transaction = value;
+
+  set setBalance(double value) => _balance = value;
+
   set imageResource(String value) {
     _imageResource = value;
   }
-  set gender(String value) {
-    _gender = value;
-  }
-
 }

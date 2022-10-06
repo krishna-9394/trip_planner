@@ -13,8 +13,8 @@ class NewUser extends StatefulWidget {
 class _NewUserState extends State<NewUser> {
   bool _showError = false;
   final nameEditor = TextEditingController();
-  final genderEditor = TextEditingController();
-  final amountEditor = TextEditingController();
+  // final genderEditor = TextEditingController();
+  // final amountEditor = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -37,16 +37,16 @@ class _NewUserState extends State<NewUser> {
                       labelText: "enter the UserName..",
                       errorText: _showError? "this user name already exist.." : null),
                 ),
-                TextField(
-                  controller: genderEditor,
-                  keyboardType: TextInputType.text,
-                  decoration: const InputDecoration(hintText: "enter the gender.."),
-                ),
-                TextField(
-                  controller: amountEditor,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(hintText: "enter the balance.."),
-                ),
+                // TextField(
+                //   controller: genderEditor,
+                //   keyboardType: TextInputType.text,
+                //   decoration: const InputDecoration(hintText: "enter the gender.."),
+                // ),
+                // TextField(
+                //   controller: amountEditor,
+                //   keyboardType: TextInputType.number,
+                //   decoration: const InputDecoration(hintText: "enter the balance.."),
+                // ),
               ],
             ),
           ),
@@ -60,10 +60,10 @@ class _NewUserState extends State<NewUser> {
               TextButton(
                   onPressed: (){
                     String name = nameEditor.text.trim();
-                    String gender = genderEditor.text;
-                    String amount = amountEditor.text;
-                    if(name == '' || gender == '' || amount == '' || int.parse(amount)<0){ return; }
-                    widget.addUser(name,gender,int.parse(amount));
+                    // String gender = genderEditor.text;
+                    // String amount = amountEditor.text;
+                    if(name == ''){ return; }
+                    widget.addUser(name);
                     Navigator.pop(context);
                   },
                   child: const Text("Add",style: TextStyle(color: Colors.green),)),

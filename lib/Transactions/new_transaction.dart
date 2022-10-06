@@ -16,12 +16,14 @@ class _NewTransactionState extends State<NewTransaction> {
   TextEditingController amountEditor = TextEditingController();
 
   var dropdownvalue;
-  void initialize(){
-     widget.usersList.isEmpty? dropdownvalue = "" : dropdownvalue = widget.usersList[0].userName;
+  @override
+  void initState() {
+    // TODO: implement initState
+    widget.usersList.isEmpty? dropdownvalue = "" : dropdownvalue = widget.usersList[0].userName;
+    super.initState();
   }
   @override
   Widget build(BuildContext context) {
-    initialize();
     return Container(
          margin: const EdgeInsets.only(left: 10,right: 10,top: 10),
          padding: const EdgeInsets.only(left: 10,right: 10,top: 10),
@@ -40,7 +42,7 @@ class _NewTransactionState extends State<NewTransaction> {
                        items: widget.usersList.map<DropdownMenuItem<String>>((User user){
                           return DropdownMenuItem<String>  (value: user.userName,child: Text(user.userName),);
                        }).toList(),
-                       onChanged: (newValue){
+                       onChanged: (String? newValue){
                          setState(() {
                            dropdownvalue = newValue!;
                          });

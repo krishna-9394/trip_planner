@@ -25,10 +25,6 @@ class UserUI extends StatelessWidget {
                 ),
                 Container(
                   margin: const EdgeInsets.only(left: 10,right: 10),
-                  child: Text(user.gender),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(left: 10,right: 10),
                   child: Text(user.imageResource),
                 ),
               ],
@@ -38,7 +34,7 @@ class UserUI extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             margin: const EdgeInsets.only(right: 25,top: 15,bottom: 15),
             decoration: BoxDecoration(border: Border.all(color: Theme.of(context).primaryColor,width: 2,style: BorderStyle.solid)),
-            child: Text("\u{20B9} ${user.balance}",style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold,color: user.balance<0? Colors.redAccent : Colors.green,),
+            child: Text("\u{20B9} ${user.balance.toStringAsFixed(2)}",style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold,color: user.balance<0? Colors.redAccent : Colors.green,),
             ),
           ),
         ],
