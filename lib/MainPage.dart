@@ -23,6 +23,7 @@ class _MainPageState extends State<MainPage> {
   double divident = 0;
   List<Transaction> _transactionList = [];
   List<User> _userList = [];
+  bool _showUsers = false;
 
   void _addTransaction(String userName,String note,int amount){
     setState((){
@@ -88,103 +89,136 @@ class _MainPageState extends State<MainPage> {
        _userList[i].setBalance = (_userList[i].paid - divident);
      }
    });
-  }
+  }  // this is the function called from UserList => UserUI
 
   @override
   Widget build(BuildContext context) {
+
+    final appBar = AppBar(
+        title: Text(widget.tripName),
+        actions: [// this displays the Widgets at the Topright
+          Container(
+            padding: const EdgeInsets.all(5),
+            child: Row(
+              children: [
+                (_showUsers)? const Text("hide users list") : const Text("show users list"),
+                Switch(onChanged: (val){
+                  setState(() {
+                    _showUsers = val;
+                  });
+                },value: _showUsers),
+                IconButton(
+                  icon: const Icon(Icons.analytics,color: Colors.white),
+                  onPressed: () {},
+                ),
+              ]
+            ),
+          ),
+        ]);
+    double appBarHeight = appBar.preferredSize.height;
+    double systemPadding = MediaQuery.of(context).padding.top+MediaQuery.of(context).padding.bottom;
+    double mainScreenHeight = MediaQuery.of(context).size.height-appBarHeight-systemPadding;
+    var userHeader = SizedBox(
+      height: mainScreenHeight*0.102,
+      child: Card(
+        elevation: 7.5,
+        margin: const EdgeInsets.only(top: 10),
+        child: Container(
+          padding: const EdgeInsets.only(left: 20,right: 20,bottom: 5),
+          child: ListTile(
+              title: const Text("Users List",style: TextStyle(fontSize: 28,fontWeight: FontWeight.bold),),// User List heading
+              trailing: Ink(
+                  width: 40,
+                  height: 40,
+                  decoration: ShapeDecoration(
+                    color: Theme.of(context).primaryColor,
+                    shape: const CircleBorder(),
+                  ),
+                  child: Center(
+                    child: IconButton(
+                      onPressed: () {
+                        showModalBottomSheet(context: context,
+                            isScrollControlled: true,
+                            builder: ((builderContext){
+                          return GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: (){},
+                              child: NewUser(_userList,_addUser));
+                        }));
+                      },
+                      icon: const Icon(Icons.add),
+                      color: Colors.white,
+                      iconSize: 25,),
+                  )
+              ),
+          )
+        ),
+      ),
+    );
+    var transactionHeader = SizedBox(
+      height: mainScreenHeight*0.102,
+      child: Card(
+        elevation: 7.5,
+        margin: const EdgeInsets.only(top: 10),
+        child: Container(
+          padding: const EdgeInsets.only(left: 20,right: 20,bottom: 10),
+          child: ListTile(
+            title: const Text("Transactions List",style: TextStyle(fontSize: 28,fontWeight: FontWeight.bold),),
+            trailing: Ink(
+                width: 40,
+                height: 40,
+                decoration: ShapeDecoration(
+                  color: Theme.of(context).primaryColor,
+                  shape: const CircleBorder(),
+                ),
+                child: Center(
+                  child: IconButton(
+                    onPressed: () {
+                      showModalBottomSheet(context: context,
+                          isScrollControlled: true,
+                          builder: ((builderContext){
+                        return GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: (){},
+                            child: NewTransaction(_userList,_addTransaction));
+                      }));
+                    },
+                    icon: const Icon(Icons.add),
+                    color: Colors.white,
+                    iconSize: 25,),
+                )
+            ),
+          )
+        ),
+      ),
+    );
     return MaterialApp(
       theme: ThemeData(
         primarySwatch: Colors.purple,
-        accentColor: Colors.amberAccent,
       ),
       home: Scaffold(
-        appBar: AppBar(
-          title: Text(widget.tripName),
-          actions: [// this displays the Widgets at the Topright
-            Container(
-              padding: const EdgeInsets.all(5),
-              child: IconButton(
-                icon: const Icon(Icons.analytics,color: Colors.white),
-                onPressed: () {},
-              ),
-            ),
-          ]),
-        body: ListView(
-          children: [
-            Card(
-              elevation: 10,
-            margin: const EdgeInsets.only(top: 10),
-            child: Container(
-              padding: const EdgeInsets.only(left: 20,right: 20,top: 10,bottom: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  const Text("Transactions List",style: TextStyle(fontSize: 28,fontWeight: FontWeight.bold),),// Transaction List heading
-                  Ink(
-                      width: 40,
-                      height: 40,
-                      decoration: ShapeDecoration(
-                        color: Theme.of(context).primaryColor,
-                        shape: const CircleBorder(),
-                      ),
-                      child: Center(
-                        child: IconButton(
-                          onPressed: () {
-                            showModalBottomSheet(context: context, builder: ((builderContext){
-                              return GestureDetector(
-                                behavior: HitTestBehavior.opaque,
-                                  onTap: (){},
-                                  child: NewTransaction(_userList,_addTransaction));
-                            }));
-                          },
-                          icon: const Icon(Icons.add),
-                          color: Colors.white,
-                          iconSize: 25,),
-                      )
-                  )
-                ],
-              ),
-            ),
-            ), //transactions list title;,
-            TransactionList(_deleteTransaction,_transactionList),
-            Card(
-              elevation: 10,
-              margin: const EdgeInsets.only(top: 10),
-              child: Container(
-                padding: const EdgeInsets.only(left: 20,right: 20,top: 10,bottom: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    const Text("Users List",style: TextStyle(fontSize: 28,fontWeight: FontWeight.bold),),// User List heading
-                    Ink(
-                        width: 40,
-                        height: 40,
-                        decoration: ShapeDecoration(
-                          color: Theme.of(context).primaryColor,
-                          shape: const CircleBorder(),
-                        ),
-                        child: Center(
-                          child: IconButton(
-                            onPressed: () {
-                              showModalBottomSheet(context: context, builder: ((builderContext){
-                                return GestureDetector(
-                                    behavior: HitTestBehavior.opaque,
-                                    onTap: (){},
-                                    child: NewUser(_userList,_addUser));
-                              }));
-                            },
-                            icon: const Icon(Icons.add),
-                            color: Colors.white,
-                            iconSize: 25,),
-                        )
-                    )
-                  ],
+        appBar: appBar,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              transactionHeader,
+              SizedBox(
+                height: _showUsers? (mainScreenHeight*0.358) : (mainScreenHeight*0.898),
+                child: SingleChildScrollView(
+                  child: TransactionList(_deleteTransaction,_transactionList),
                 ),
               ),
-            ), // users list title;,
-            UserList(_userList),
-          ],
-        ),
+              _showUsers? userHeader : const SizedBox(height: 0),
+              _showUsers? SizedBox(
+                height: mainScreenHeight*0.429,
+                child: SingleChildScrollView(
+                  child: UserList(_userList),
+                ),
+              ) : const SizedBox( height: 0,),
+            ],
+          ),
+        )
+
         // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         // floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
         // floatingActionButton: FloatingActionButton(
@@ -196,7 +230,6 @@ class _MainPageState extends State<MainPage> {
         //   },
         // )
       ),
-      debugShowCheckedModeBanner: false,  // to remove the debug banner
     );
   }
 }

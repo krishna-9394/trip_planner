@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../Models/User.dart';
+import 'package:flutter/services.dart';
 
 class NewUser extends StatefulWidget {
   final Function addUser;
@@ -26,52 +27,55 @@ class _NewUserState extends State<NewUser> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(left: 10,right: 10,top: 10),
-      padding: const EdgeInsets.only(left: 10,right: 10,top: 10),
-      child: Column(
-        children: [
-          const Text("Add User",style: TextStyle(fontWeight: FontWeight.bold)),
-          const SizedBox(height: 10),
-          SizedBox(
-            width: double.infinity,
-            child: Column(
-              children:[
-                 TextField(
-                  controller: nameEditor,
-                  autofocus: true,
-                  keyboardType: TextInputType.name,
-                  onSubmitted: (name) => submit,
-                  decoration: InputDecoration(
-                      labelText: "enter the UserName..",
-                      errorText: _showError? "this user name already exist.." : null),
-                ),
-                // TextField(
-                //   controller: genderEditor,
-                //   keyboardType: TextInputType.text,
-                //   decoration: const InputDecoration(hintText: "enter the gender.."),
-                // ),
-                // TextField(
-                //   controller: amountEditor,
-                //   keyboardType: TextInputType.number,
-                //   decoration: const InputDecoration(hintText: "enter the balance.."),
-                // ),
+    return SingleChildScrollView(
+      child: Container(
+        margin: const EdgeInsets.only(left: 10,right: 10,top: 10),
+        padding: EdgeInsets.only(left: 10,right: 10,top: 10,bottom: (10 + MediaQuery.of(context).viewInsets.bottom)),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text("Add User",style: TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 10),
+            SizedBox(
+              width: double.infinity,
+              child: Column(
+                children:[
+                   TextField(
+                    controller: nameEditor,
+                    autofocus: true,
+                    keyboardType: TextInputType.name,
+                    onSubmitted: (name) => submit,
+                    decoration: InputDecoration(
+                        labelText: "enter the UserName..",
+                        errorText: _showError? "this user name already exist.." : null),
+                  ),
+                  // TextField(
+                  //   controller: genderEditor,
+                  //   keyboardType: TextInputType.text,
+                  //   decoration: const InputDecoration(hintText: "enter the gender.."),
+                  // ),
+                  // TextField(
+                  //   controller: amountEditor,
+                  //   keyboardType: TextInputType.number,
+                  //   decoration: const InputDecoration(hintText: "enter the balance.."),
+                  // ),
+                ],
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                    onPressed: (){  Navigator.pop(context); },
+
+                    child: const Text("Cancel",style: TextStyle(color: Colors.red),)),
+                TextButton(
+                    onPressed: submit,
+                    child: const Text("Add",style: TextStyle(color: Colors.green),)),
               ],
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TextButton(
-                  onPressed: (){  Navigator.pop(context); },
-
-                  child: const Text("Cancel",style: TextStyle(color: Colors.red),)),
-              TextButton(
-                  onPressed: submit,
-                  child: const Text("Add",style: TextStyle(color: Colors.green),)),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

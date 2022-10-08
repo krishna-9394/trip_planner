@@ -24,6 +24,7 @@ class UserUI extends StatelessWidget {
           ),
           title: Text(user.userName,style: const TextStyle(fontWeight: FontWeight.bold),),
           subtitle: Text("\u{20B9}${user.paid} is paid "),
+        trailing: IconButton(onPressed: () {  }, icon: const Icon(Icons.add),),
       ),
     );
   }
