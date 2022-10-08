@@ -4,8 +4,9 @@ import '../Models/Transaction.dart';
 import 'TransactionUI.dart';
 
 class TransactionList extends StatelessWidget {
+  final Function deleteTransaction;
   final List<Transaction> transactionList;
-  const TransactionList(this.transactionList, {super.key});
+  const TransactionList(this.deleteTransaction,this.transactionList, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class TransactionList extends StatelessWidget {
 
 
         itemBuilder: (context,index){
-          return TransactionUI(transactionList[index]);
+          return TransactionUI(deleteTransaction,transactionList[index]);
         },
         itemCount: transactionList.length,
       ),

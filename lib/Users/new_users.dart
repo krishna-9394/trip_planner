@@ -15,6 +15,14 @@ class _NewUserState extends State<NewUser> {
   final nameEditor = TextEditingController();
   // final genderEditor = TextEditingController();
   // final amountEditor = TextEditingController();
+  void submit(){
+    String name = nameEditor.text.trim();
+    // String gender = genderEditor.text;
+    // String amount = amountEditor.text;
+    if(name == ''){ return; }
+    widget.addUser(name);
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +41,7 @@ class _NewUserState extends State<NewUser> {
                   controller: nameEditor,
                   autofocus: true,
                   keyboardType: TextInputType.name,
+                  onSubmitted: (name) => submit,
                   decoration: InputDecoration(
                       labelText: "enter the UserName..",
                       errorText: _showError? "this user name already exist.." : null),
@@ -58,14 +67,7 @@ class _NewUserState extends State<NewUser> {
 
                   child: const Text("Cancel",style: TextStyle(color: Colors.red),)),
               TextButton(
-                  onPressed: (){
-                    String name = nameEditor.text.trim();
-                    // String gender = genderEditor.text;
-                    // String amount = amountEditor.text;
-                    if(name == ''){ return; }
-                    widget.addUser(name);
-                    Navigator.pop(context);
-                  },
+                  onPressed: submit,
                   child: const Text("Add",style: TextStyle(color: Colors.green),)),
             ],
           ),

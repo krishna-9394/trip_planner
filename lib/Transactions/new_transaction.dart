@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../Models/User.dart';
 
 class NewTransaction extends StatefulWidget {
@@ -18,9 +17,16 @@ class _NewTransactionState extends State<NewTransaction> {
   var dropdownvalue;
   @override
   void initState() {
-    // TODO: implement initState
     widget.usersList.isEmpty? dropdownvalue = "" : dropdownvalue = widget.usersList[0].userName;
     super.initState();
+  }
+  void submit(){
+    String name = dropdownvalue;
+    String note = noteEditor.text;
+    String amount = amountEditor.text;
+    if(name == '' || note == '' || amount == '' || int.parse(amount)<0){ return; }
+    widget.addTransaction(name,note,int.parse(amount));
+    Navigator.pop(context);
   }
   @override
   Widget build(BuildContext context) {
@@ -36,26 +42,33 @@ class _NewTransactionState extends State<NewTransaction> {
                child: Column(
                  mainAxisAlignment: MainAxisAlignment.start,
                  children: [
-                   DropdownButton<String>(
-                       icon: const Icon(Icons.keyboard_arrow_down),
-                       value: dropdownvalue,
-                       items: widget.usersList.map<DropdownMenuItem<String>>((User user){
-                          return DropdownMenuItem<String>  (value: user.userName,child: Text(user.userName),);
-                       }).toList(),
-                       onChanged: (String? newValue){
-                         setState(() {
-                           dropdownvalue = newValue!;
-                         });
-                       }),
+                   SizedBox(
+                       width: double.infinity,
+                       child: DropdownButton<String>(
+                         elevation: 5,
+                           icon: const Icon(Icons.keyboard_arrow_down),
+                           value: dropdownvalue,
+                           items: widget.usersList.map<DropdownMenuItem<String>>((User user){
+                             return DropdownMenuItem<String>  (value: user.userName,child: Text(user.userName),);
+                           }).toList(),
+                           onChanged: (String? newValue){
+                             setState(() {
+                               dropdownvalue = newValue!;
+                             });
+                           }),
+                   ),
                    TextField(
                      controller: noteEditor,
                      keyboardType: TextInputType.text,
                      decoration: const InputDecoration(hintText: "enter the note.."),
+                     textInputAction: TextInputAction.next,
                    ),
                    TextField(
                      controller: amountEditor,
                      keyboardType: TextInputType.number,
                      decoration: const InputDecoration(hintText: "enter the amount.."),
+                     textInputAction: TextInputAction.done,
+                     onSubmitted: (amount) => submit,
                    ),
                  ],
                ),
@@ -68,14 +81,7 @@ class _NewTransactionState extends State<NewTransaction> {
 
                      child: const Text("Cancel",style: TextStyle(color: Colors.red),)),
                  TextButton(
-                     onPressed: (){
-                       String name = dropdownvalue;
-                       String note = noteEditor.text;
-                       String amount = amountEditor.text;
-                       if(name == '' || note == '' || amount == '' || int.parse(amount)<0){ return; }
-                       widget.addTransaction(name,note,int.parse(amount));
-                       Navigator.pop(context);
-                     },
+                     onPressed: submit,
                      child: const Text("Add",style: TextStyle(color: Colors.green),)),
                ],
              ),

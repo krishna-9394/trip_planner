@@ -18,50 +18,82 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   double totalAmount = 0;
-  int n = 0;
+  int usersCount = 0;
+  int transactionCount = 0;
   double divident = 0;
   List<Transaction> _transactionList = [];
   List<User> _userList = [];
 
   void _addTransaction(String userName,String note,int amount){
-    int index = -1;
-    totalAmount+=amount;
-    n==0 ? divident = 0 : divident = totalAmount/n;
-    final Transaction transaction = Transaction(amount,note,userName,DateTime.now());
-    for(int i = 0;i<n;i++){
-      if(_userList[i].userName.compareTo(userName) == 0) {
-        index = i;
-        break;
-      }
-    }
-
     setState((){
+      transactionCount++;
+      int index = -1;
+      totalAmount+=amount;
+      usersCount==0 ? divident = 0 : divident = totalAmount/usersCount;
+      final Transaction transaction = Transaction(DateTime.now().millisecondsSinceEpoch.toString(),amount,note,userName,DateTime.now());
+      for(int i = 0;i<usersCount;i++){
+        if(_userList[i].userName.compareTo(userName) == 0) {
+          index = i;
+          break;
+        }
+      }
       _transactionList.insert(0,transaction);
       _userList[index].transaction.add(transaction);
-      _userList[index].paid += transaction.amount;
-      for(int i = 0;i<n;i++){
+      _userList[index].setPaid = (_userList[index].paid+transaction.amount);
+      for(int i = 0;i<usersCount;i++){
         _userList[i].setBalance= (_userList[i].paid-divident);
       }
-
     });
   }
   void _addUser(String userName){
-    n++;
-    divident = totalAmount/n;
-    bool _add = true;
-    for (var element in _userList) {
-      if(element.userName.compareTo(userName) == 0) {
-        _add = false;
-        break;
-      }
-    }
-    final User user = User(0,0,userName,"resource");
     setState((){
+      usersCount++;
+      divident = totalAmount/usersCount;
+      bool _add = true;
+      for (var element in _userList) {
+        if(element.userName.compareTo(userName) == 0) {
+          _add = false;
+          break;
+        }
+      }
+      final User user = User(DateTime.now().millisecondsSinceEpoch.toString(),0,0,userName,"resource");
       if(_add) _userList.insert(0,user);
       for(int i = 0;i<_userList.length;i++){
         _userList[i].setBalance= (_userList[i].paid-divident);
       }
     });
+  }
+  void _deleteTransaction(String id){
+   setState((){
+     print("$transactionCount  $usersCount");
+     int transactionIndex = -1,userIndex = -1;
+     for(int i = 0;i<transactionCount;i++){
+       if(_transactionList[i].id.compareTo(id) == 0) {
+         transactionIndex = i;
+         break;
+       }
+     }
+     for(int i = 0;i<usersCount;i++){
+       if(_userList[i].userName.compareTo(_transactionList[transactionIndex].userName) == 0) {
+         userIndex = i;
+         break;
+       }
+     }
+     print(transactionIndex);
+     print(userIndex);
+     totalAmount -= _transactionList[transactionIndex].amount;
+     divident = totalAmount/usersCount;
+     int tempIndex = -1;
+     _userList[userIndex].setPaid = (_userList[userIndex].paid - _transactionList[transactionIndex].amount);
+     _userList[userIndex].transaction.removeWhere((element) => element.id == id);
+     _transactionList.removeWhere((element) => element.id==id);
+     for(int i = 0;i<usersCount;i++){
+       _userList[i].setBalance= (_userList[i].paid-divident);
+     }
+   _userList[userIndex].transaction.forEach((tx){
+     print(tx.amount);
+   });
+   });
   }
 
   @override
@@ -120,7 +152,7 @@ class _MainPageState extends State<MainPage> {
               ),
             ),
             ), //transactions list title;,
-            TransactionList(_transactionList),
+            TransactionList(_deleteTransaction,_transactionList),
             Card(
               elevation: 10,
               margin: const EdgeInsets.only(top: 10),

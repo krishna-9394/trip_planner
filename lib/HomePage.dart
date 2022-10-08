@@ -43,6 +43,8 @@ class _TempState extends State<Temp> {
                         borderSide: BorderSide(width: 2.0,style: BorderStyle.solid,color: Colors.pink)),
                     hintText: 'Enter the Event name',
                   ),
+                  autofocus: true,
+                  textInputAction: TextInputAction.done,
                 )
             ),
             InkWell(
