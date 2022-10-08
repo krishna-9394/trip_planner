@@ -65,7 +65,6 @@ class _MainPageState extends State<MainPage> {
   }
   void _deleteTransaction(String id){
    setState((){
-     print("$transactionCount  $usersCount");
      int transactionIndex = -1,userIndex = -1;
      for(int i = 0;i<transactionCount;i++){
        if(_transactionList[i].id.compareTo(id) == 0) {
@@ -79,20 +78,15 @@ class _MainPageState extends State<MainPage> {
          break;
        }
      }
-     print(transactionIndex);
-     print(userIndex);
      totalAmount -= _transactionList[transactionIndex].amount;
      divident = totalAmount/usersCount;
      int tempIndex = -1;
      _userList[userIndex].setPaid = (_userList[userIndex].paid - _transactionList[transactionIndex].amount);
      _userList[userIndex].transaction.removeWhere((element) => element.id == id);
      _transactionList.removeWhere((element) => element.id==id);
-     for(int i = 0;i<usersCount;i++){
-       _userList[i].setBalance= (_userList[i].paid-divident);
+     for(int i = 0;i<usersCount;i++) {
+       _userList[i].setBalance = (_userList[i].paid - divident);
      }
-   _userList[userIndex].transaction.forEach((tx){
-     print(tx.amount);
-   });
    });
   }
 
