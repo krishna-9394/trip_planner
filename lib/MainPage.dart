@@ -119,7 +119,7 @@ class _MainPageState extends State<MainPage> {
     double systemPadding = MediaQuery.of(context).padding.top+MediaQuery.of(context).padding.bottom;
     double mainScreenHeight = MediaQuery.of(context).size.height-appBarHeight-systemPadding;
     var userHeader = SizedBox(
-      height: mainScreenHeight*0.102,
+      height: mainScreenHeight*0.112,
       child: Card(
         elevation: 7.5,
         margin: const EdgeInsets.only(top: 10),
@@ -156,7 +156,7 @@ class _MainPageState extends State<MainPage> {
       ),
     );
     var transactionHeader = SizedBox(
-      height: mainScreenHeight*0.102,
+      height: mainScreenHeight*0.112,
       child: Card(
         elevation: 7.5,
         margin: const EdgeInsets.only(top: 10),
@@ -203,14 +203,14 @@ class _MainPageState extends State<MainPage> {
             children: [
               transactionHeader,
               SizedBox(
-                height: _showUsers? (mainScreenHeight*0.358) : (mainScreenHeight*0.898),
+                height: _showUsers? (mainScreenHeight*0.348) : (mainScreenHeight*0.888),
                 child: SingleChildScrollView(
                   child: TransactionList(_deleteTransaction,_transactionList),
                 ),
               ),
               _showUsers? userHeader : const SizedBox(height: 0),
               _showUsers? SizedBox(
-                height: mainScreenHeight*0.429,
+                height: mainScreenHeight*0.427,
                 child: SingleChildScrollView(
                   child: UserList(_userList),
                 ),

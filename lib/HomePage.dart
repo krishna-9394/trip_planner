@@ -30,40 +30,38 @@ class _TempState extends State<Temp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Expense Manager'),),
-      body: Column(
-          mainAxisAlignment: MainAxisAlignment.center ,
-          children:  <Widget>[
-            Container(
-                margin: const EdgeInsets.only(left: 20,right: 20),
+      body: Container(
+        margin: const EdgeInsets.symmetric(vertical: 20,horizontal: 10),
+        child: Row(
+            children:  <Widget>[
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.7,
                 child: TextField(
                   controller: editor,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                        borderSide: BorderSide(width: 2.0,style: BorderStyle.solid,color: Colors.pink)),
+                        borderSide: BorderSide(style: BorderStyle.solid,color: Colors.pink)),
                     hintText: 'Enter the Event name',
                   ),
                   autofocus: true,
                   textInputAction: TextInputAction.done,
-                )
-            ),
-            InkWell(
-              splashColor: Colors.black26,
-              onTap: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context)=>MainPage(editor.text)));
-              },
-              child: Container(
-                margin: const EdgeInsets.only(top: 15),
-                child: Ink.image(
-                  image:const AssetImage('Assets/Images/next_button.png'),
-                  width: 80,
-                  height: 80,
-                  fit: BoxFit.cover,
                 ),
               ),
-            )
-          ]
+              SizedBox( width: MediaQuery.of(context).size.width * 0.05),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.20,
+                child: IconButton(
+                  iconSize: MediaQuery.of(context).size.width * 0.08,
+                  icon: const Icon(Icons.arrow_circle_right_outlined),
+                  onPressed: () => {
+                  Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context)=>MainPage(editor.text))),
+                  },
+                ),
+              )
+            ]
+        ),
       ),
     );
   }
