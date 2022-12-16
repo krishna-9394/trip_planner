@@ -1,29 +1,45 @@
+import 'package:expense_tracker/Users/UserUI.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-import '../Models/User.dart';
-import 'UserUI.dart';
+import '../Models/models.dart';
 
 class UserList extends StatelessWidget {
-  final List<User> userList;
-  const UserList(this.userList, {super.key});
+  final String tripName;
+  final Box list;
+  final double totalAmount;
+  const UserList(this.list, this.totalAmount, {super.key, required this.tripName});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(5),
-      child: userList.isEmpty? const Text("There is no users to show") : ListView.builder(
-
-        // make the listview to take remaining portion
-        // ------*-----
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        // -----*------
-
-
-        itemBuilder: (context,index){
-          return UserUI(userList[index]);
-        },
-        itemCount: userList.length,
+      child: Expanded(
+        child: ValueListenableBuilder(
+          valueListenable: list.listenable(),
+          builder: (BuildContext context, value, Widget? child) {
+            if (list.isEmpty) {
+              return const Center(
+                child: Text("No Trips to Display, start Creating.."),
+              );
+            } else {
+              return ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: list.length,
+                itemBuilder: (context, index) {
+                  User user = list.getAt(index);
+                  if (user.tripName.compareTo(tripName) == 0) {
+                    double divident = totalAmount / (list.length);
+                    return UserUI(user, divident - totalAmount);
+                  }
+                  return const SizedBox(height: 0);
+                },
+              );
+            }
+          },
+        ),
       ),
     );
   }

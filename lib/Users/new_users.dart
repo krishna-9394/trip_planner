@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import '../Models/User.dart';
 import 'package:flutter/services.dart';
 
 class NewUser extends StatefulWidget {
   final Function addUser;
-  final List<User> userList;
-  const NewUser(this.userList,this.addUser, {super.key});
+  final Function compare;
+  const NewUser(this.compare, this.addUser, {super.key});
 
   @override
   State<NewUser> createState() => _NewUserState();
@@ -14,14 +13,16 @@ class NewUser extends StatefulWidget {
 class _NewUserState extends State<NewUser> {
   bool _showError = false;
   final nameEditor = TextEditingController();
-  // final genderEditor = TextEditingController();
-  // final amountEditor = TextEditingController();
-  void submit(){
+  void submit() {
     String name = nameEditor.text.trim();
-    // String gender = genderEditor.text;
-    // String amount = amountEditor.text;
-    if(name == ''){ return; }
-    widget.addUser(name);
+    if (name == '') {
+      return;
+    }
+    if (widget.compare(name)) {
+      widget.addUser(name);
+    } else {
+      return;
+    }
     Navigator.pop(context);
   }
 
@@ -29,25 +30,25 @@ class _NewUserState extends State<NewUser> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
-        margin: const EdgeInsets.only(left: 10,right: 10,top: 10),
-        padding: EdgeInsets.only(left: 10,right: 10,top: 10,bottom: (10 + MediaQuery.of(context).viewInsets.bottom)),
+        margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
+        padding: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: (10 + MediaQuery.of(context).viewInsets.bottom)),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text("Add User",style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text("Add User", style: TextStyle(fontWeight: FontWeight.bold)),
             const SizedBox(height: 10),
             SizedBox(
               width: double.infinity,
               child: Column(
-                children:[
-                   TextField(
+                children: [
+                  TextField(
                     controller: nameEditor,
                     autofocus: true,
                     keyboardType: TextInputType.name,
                     onSubmitted: (name) => submit,
                     decoration: InputDecoration(
                         labelText: "enter the UserName..",
-                        errorText: _showError? "this user name already exist.." : null),
+                        errorText: _showError ? "this user name already exist.." : null),
                   ),
                   // TextField(
                   //   controller: genderEditor,
@@ -66,12 +67,19 @@ class _NewUserState extends State<NewUser> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
-                    onPressed: (){  Navigator.pop(context); },
-
-                    child: const Text("Cancel",style: TextStyle(color: Colors.red),)),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      "Cancel",
+                      style: TextStyle(color: Colors.red),
+                    )),
                 TextButton(
                     onPressed: submit,
-                    child: const Text("Add",style: TextStyle(color: Colors.green),)),
+                    child: const Text(
+                      "Add",
+                      style: TextStyle(color: Colors.green),
+                    )),
               ],
             ),
           ],
@@ -79,17 +87,4 @@ class _NewUserState extends State<NewUser> {
       ),
     );
   }
-
-  bool validator(String text) {
-    String name = nameEditor.text.trim();
-    if(name.isEmpty) return false;
-    for (var element in widget.userList) {
-    if(element.userName.compareTo(name)==0) return false;
-    }
-    return true;
-  }
-}// class
-
-
-
-
+} // class

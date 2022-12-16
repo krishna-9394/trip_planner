@@ -14,18 +14,20 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     _navigateHome();
   }
+
   // code for moving to next screen after 2.5 sec
-  void _navigateHome()async{
-    await Future.delayed(const Duration(milliseconds: 2500),(){});
-    Navigator.pushReplacement(context,
-    MaterialPageRoute(builder: (context)=>HomePage()));
+  void _navigateHome() async {
+    await Future.delayed(const Duration(milliseconds: 2500), () {});
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Temp()));
   }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
-        child: Container(
-          child: Text('Splash Screen..',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 28),),
+        child: Text(
+          'Splash Screen..',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28),
         ),
       ),
     );
