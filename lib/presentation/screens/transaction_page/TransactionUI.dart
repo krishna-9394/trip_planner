@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../Models/models.dart';
+import '../../../business_logic/transactions/transactions_bloc.dart';
+import '../../../data/Models/transaction.dart';
 
 class TransactionUI extends StatelessWidget {
-  final Function deleteTransaction;
+  final int tripIndex;
+  final int transactionIndex;
+  final int userIndex;
   final Transaction transaction;
-  final int index;
-  const TransactionUI(this.deleteTransaction, this.transaction, this.index, {super.key});
+  const TransactionUI(
+      {super.key,
+      required this.tripIndex,
+      required this.transactionIndex,
+      required this.userIndex,
+      required this.transaction});
   @override
   Widget build(BuildContext context) {
     String date = DateFormat('dd/MM/yyyy').format(transaction.time);
@@ -40,7 +48,8 @@ class TransactionUI extends StatelessWidget {
                 Text(DateFormat.yMMMd().format(transaction.time).toString()),
               ]),
           trailing: IconButton(
-            onPressed: () => deleteTransaction(index),
+            onPressed: () => BlocProvider.of<TransactionBloc>(context).add(
+                DeleteTransactionEvent(tripIndex: tripIndex, transactionIndex: transactionIndex, userIndex: userIndex)),
             icon: const Icon(Icons.delete_rounded, color: Colors.red),
           )),
     );

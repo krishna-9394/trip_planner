@@ -1,4 +1,4 @@
-import 'package:expense_tracker/HomePage.dart';
+import 'package:expense_tracker/presentation/screens/trips_pages/HomePage.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -18,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
   // code for moving to next screen after 2.5 sec
   void _navigateHome() async {
     await Future.delayed(const Duration(milliseconds: 2500), () {});
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Temp()));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TripsListPage()));
   }
 
   @override

@@ -1,9 +1,10 @@
-import 'package:expense_tracker/Users/UserUI.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../Models/models.dart';
+import '../../../business_logic/trips/trip_bloc.dart';
+
 
 class UserList extends StatelessWidget {
   final String tripName;
@@ -13,13 +14,13 @@ class UserList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<TripBloc>(context).add(ExtractUser());
     return Container(
       margin: const EdgeInsets.all(5),
       child: Expanded(
-        child: ValueListenableBuilder(
-          valueListenable: list.listenable(),
-          builder: (BuildContext context, value, Widget? child) {
-            if (list.isEmpty) {
+        child: BlocBuilder<TripBloc,TripState>(
+          builder: (context,state) {
+            if (state is ) {
               return const Center(
                 child: Text("No Trips to Display, start Creating.."),
               );
@@ -39,7 +40,7 @@ class UserList extends StatelessWidget {
               );
             }
           },
-        ),
+        )
       ),
     );
   }

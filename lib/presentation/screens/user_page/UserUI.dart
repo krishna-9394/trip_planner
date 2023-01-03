@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../Models/models.dart';
+import '../../../data/Models/user.dart';
 
 class UserUI extends StatelessWidget {
   final User user;
