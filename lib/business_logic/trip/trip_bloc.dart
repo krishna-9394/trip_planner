@@ -4,15 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // TODO getting error in LateInitialization
 
 import '../../data/models/trips.dart';
-import '../../data/models/users.dart';
 import '../../data/services/trip_services.dart';
 
 part 'trip_event.dart';
 part 'trip_state.dart';
 
 class TripBloc extends Bloc<TripEvent, TripState> {
-  final TripsRepo _repo;
-  TripBloc(this._repo) : super(InitializingTripsState()) {
+  final TripsRepo _repo = TripsRepo();
+  TripBloc() : super(InitializingTripsState()) {
     on<LoadingTripsEvent>((event, emit) async {
       await _repo.init();
       emit(LoadingTripsState());
@@ -48,27 +47,6 @@ class TripBloc extends Bloc<TripEvent, TripState> {
         // emit(FailedToUpdateTripState(error: error as Error));
       }
       emit(LoadedTripState(trips: await _repo.getList()));
-    });
-    on<LoadingUsersEvent>((event, emit) async {
-      emit(LoadingUsersState());
-      try {
-        emit(LoadedUsersState(size: await _repo.usersCount(event.tripIndex),users: await _repo.usersList(event.tripIndex)));
-      } catch (error) {
-        emit(FailedToLoadUsersState(error: error as Error));
-      }
-    });
-    on<AddingUserEvent>((event, emit) async {
-      late String error;
-      if (event.userName.compareTo("") == 0) {
-        error = "null values not allowed";
-        emit(FailedToAddUser(error: error));
-      } else if (await _repo.searchUser(event.userName)) {
-        error = "null values not allowed";
-        emit(FailedToAddUser(error: error));
-      } else {
-        _repo.addUser(event.index, event.userName);
-        emit(AddedUsersState());
-      }
     });
   }
 }

@@ -1,6 +1,4 @@
-import 'package:expense_tracker/business_logic/trip/trip_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/models/trips.dart';
 import 'new_transaction.dart';
@@ -8,9 +6,7 @@ import 'new_transaction.dart';
 class TransactionHeader extends StatelessWidget {
   final Trip trip;
   final int tripIndex;
-  const TransactionHeader(
-      {Key? key, required this.trip, required this.tripIndex})
-      : super(key: key);
+  const TransactionHeader({Key? key, required this.trip, required this.tripIndex}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -31,16 +27,12 @@ class TransactionHeader extends StatelessWidget {
                   ),
                   child: Center(
                     child: IconButton(
-                      onPressed: () {
-                        showModalBottomSheet(
+                      onPressed: () async {
+                        await showModalBottomSheet(
                             context: context,
                             isScrollControlled: true,
                             builder: ((builderContext) {
-                              BlocProvider.of<TripBloc>(context)
-                                  .add(LoadingUsersEvent(tripIndex: tripIndex));
-                              return NewTransaction(
-                                  tripIndex: tripIndex,
-                                  trip: trip);
+                              return NewTransaction(tripIndex: tripIndex, trip: trip);
                             }));
                       },
                       icon: const Icon(Icons.add),

@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import '../../business_logic/transaction/transaction_bloc.dart';
 import '../../data/models/transactions.dart';
 
-
 class TransactionUI extends StatelessWidget {
   final int tripIndex;
   final int transactionIndex;
@@ -49,8 +48,8 @@ class TransactionUI extends StatelessWidget {
                 Text(DateFormat.yMMMd().format(transaction.time).toString()),
               ]),
           trailing: IconButton(
-            onPressed: () => BlocProvider.of<TransactionBloc>(context).add(
-                DeleteTransactionEvent(tripIndex: tripIndex, transactionIndex: transactionIndex)),
+            onPressed: () => BlocProvider.of<TransactionBloc>(context)
+                .add(DeletingTransactionEvent(tripIndex: tripIndex, transactionIndex: transactionIndex)),
             icon: const Icon(Icons.delete_rounded, color: Colors.red),
           )),
     );

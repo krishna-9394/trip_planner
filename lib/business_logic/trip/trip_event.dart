@@ -7,13 +7,6 @@ class LoadingTripsEvent extends TripEvent {
   List<Object?> get props => [];
 }
 
-class LoadingUsersEvent extends TripEvent {
-  int tripIndex;
-  LoadingUsersEvent({required this.tripIndex});
-  @override
-  List<Object?> get props => [tripIndex];
-}
-
 class DeletingTripEvent extends TripEvent {
   final int index;
   DeletingTripEvent({required this.index});
@@ -33,13 +26,5 @@ class UpdatingTripEvent extends TripEvent {
   final int index;
   UpdatingTripEvent({required this.tripName, required this.index});
   @override
-  List<Object?> get props => [tripName,index];
-}
-
-class AddingUserEvent extends TripEvent {
-  final String userName;
-  final int index;
-  AddingUserEvent({required this.index,required this.userName});
-  @override
-  List<Object?> get props => [userName,index];
+  List<Object?> get props => [tripName, index];
 }

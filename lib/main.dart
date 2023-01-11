@@ -1,5 +1,4 @@
-import 'package:expense_tracker/data/services/transaction_services.dart';
-import 'package:expense_tracker/data/services/trip_services.dart';
+import 'package:expense_tracker/business_logic/transaction/transaction_bloc.dart';
 import 'package:expense_tracker/presentation/pages/auth.dart';
 import 'package:expense_tracker/presentation/pages/trip_page.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -9,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import 'business_logic/trip/trip_bloc.dart';
 import 'data/models/transactions.dart';
 import 'data/models/trips.dart';
 import 'data/models/users.dart';
@@ -36,10 +36,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiRepositoryProvider(
+    return MultiBlocProvider(
       providers: [
-        RepositoryProvider(create: (context) => TripsRepo()),
-        RepositoryProvider(create: (context) => TransactionRepo()),
+        BlocProvider<TripBloc>(create: (context) => TripBloc()),
+        BlocProvider<TransactionBloc>(create: (context) => TransactionBloc()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

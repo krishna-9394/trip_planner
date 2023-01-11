@@ -6,8 +6,8 @@ import '../../data/models/trips.dart';
 
 class HomePage extends StatelessWidget {
   final Trip trip;
-  final int index;
-  const HomePage({super.key, required this.trip, required this.index});
+  final int tripIndex;
+  const HomePage({super.key, required this.trip, required this.tripIndex});
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +32,8 @@ class HomePage extends StatelessWidget {
           ),
           body: TabBarView(
             children: [
-              UserPage(trip: trip, tripIndex: index),
-              TransactionPage(trip: trip, tripIndex: index),
+              UserPage(trip: trip, tripIndex: tripIndex),
+              TransactionPage(trip: trip, tripIndex: tripIndex),
             ],
           )),
     );

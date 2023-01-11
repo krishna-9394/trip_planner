@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../../data/models/users.dart';
 
-
 class UserUI extends StatelessWidget {
   final User user;
+  final int userIndex;
   final double balance;
-  const UserUI(this.user, this.balance, {super.key});
+  const UserUI(this.user, this.balance, this.userIndex, {super.key});
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -16,7 +16,10 @@ class UserUI extends StatelessWidget {
           margin: const EdgeInsets.only(right: 10),
           height: 50,
           decoration: BoxDecoration(
-              border: Border.all(color: Theme.of(context).primaryColor, width: 2, style: BorderStyle.solid)),
+              border: Border.all(
+                  color: Theme.of(context).primaryColor,
+                  width: 2,
+                  style: BorderStyle.solid)),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(

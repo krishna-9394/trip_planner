@@ -18,5 +18,10 @@ class Trip extends HiveObject {
   int transactionsCount = 0;
   @HiveField(5)
   List<User> users;
-  Trip({required this.tripName, required this.time, required this.users});
+  Trip(
+      {required this.totalAmount,
+      required this.usersCount,
+      required this.tripName,
+      required this.time,
+      required this.users});
 }

@@ -14,18 +14,21 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
       emit(InitializingTransactionState());
       await _transactionRepo.init();
       emit(InitializedTransactionState());
+      add(LoadingTransactionEvent());
     });
-    on<LoadTransactionListEvent>((event, emit) async {
+    on<LoadingTransactionEvent>((event, emit) async {
       // TODO 4 reload the User end also
+      print("Loading transaction");
       emit(LoadingTransactionState());
       try {
+        print("Loaded transaction");
         emit(LoadedTransactionState(
             size: await _transactionRepo.transactionListCount(), transactions: await _transactionRepo.getList()));
       } catch (error) {
         emit(FailedToLoadTransactionState(error: error as Error));
       }
     });
-    on<AddTransactionEvent>((event, emit) async {
+    on<AddingTransactionEvent>((event, emit) async {
       try {
         await _transactionRepo.addTransaction(
             event.tripName, event.userName, event.note, event.amount, event.tripIndex);
@@ -35,7 +38,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         // emit(FailedToAddTripState(error: error as Error));
       }
     });
-    on<DeleteTransactionEvent>((event, emit) async {
+    on<DeletingTransactionEvent>((event, emit) async {
       try {
         await _transactionRepo.deleteTransaction(event.tripIndex, event.transactionIndex);
         emit(DeletedTransactionState());
@@ -44,7 +47,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         // emit(FailedToDeleteTripState(error: error as Error));
       }
     });
-    on<UpdateTransactionEvent>((event, emit) async {
+    on<UpdatingTransactionEvent>((event, emit) async {
       try {
         await _transactionRepo.updateTransaction(
             event.userName, event.note, event.amount, event.tripIndex, event.transactionIndex);

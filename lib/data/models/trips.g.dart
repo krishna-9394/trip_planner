@@ -17,13 +17,12 @@ class TripAdapter extends TypeAdapter<Trip> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Trip(
+      totalAmount: fields[2] as double,
+      usersCount: fields[3] as int,
       tripName: fields[0] as String,
       time: fields[1] as DateTime,
       users: (fields[5] as List).cast<User>(),
-    )
-      ..totalAmount = fields[2] as double
-      ..usersCount = fields[3] as int
-      ..transactionsCount = fields[4] as int;
+    )..transactionsCount = fields[4] as int;
   }
 
   @override
